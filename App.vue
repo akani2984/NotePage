@@ -17,7 +17,7 @@
   </el-tabs>
   <div v-if="!editableTabs[0]">
     <h1>点击右上角的“+”按钮以开始。</h1>
-    <p>请不要过度依赖应用内存储。在设备存储空间告急或者七天内不使用本程序（iOS平台）的情况下，您的应用内数据可能会丢失。程序会尽自己所能向浏览器请求持久存储的权限，如果申请成功会弹窗告知。把程序添加到主屏幕，授予通知权限，作为应用安装，频繁使用都有利于程序得到持久存储权限，之后您在本程序的的数据将不会自动清除。</p>
+    <p>请不要过度依赖应用内存储。在设备存储空间告急或者七天内不使用本程序（iOS平台）的情况下，您的应用内数据可能会丢失。程序会尽自己所能向浏览器请求持久存储的权限，如果申请成功会弹窗告知。把程序添加到主屏幕，授予通知权限，作为应用安装，频繁使用都有利于程序得到持久存储权限，之后您在本程序的的数据将不会自动清除。Firefox,Chrome,Edge,Safari(IOS)是推荐的浏览器。</p>
     <p>本程序离线可用。</p>
   </div>
 </template>
@@ -27,6 +27,7 @@ import { ref } from 'vue'
 import type { TabPaneName } from 'element-plus'
 import  editor  from './components/editor.vue'
 import { onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
 let tabIndex = 0
 const editableTabsValue = ref(0)
 const editableTabs = ref([])
@@ -42,7 +43,7 @@ const handleTabsEdit = (
   action: 'remove' | 'add'
 ) => {
   if (action === 'add') {
-    const newTabName = `${++tabIndex}`
+    const newTabName = editableTabs.value.length + 1
     editableTabs.value.push({
       title: '未命名.txt',
       name: newTabName,
@@ -73,15 +74,13 @@ const handleTabsEdit = (
   }
 }
 function handleTitleChange(e) {
-  console.log(editableTabs)
-  editableTabs.value[e[1] - 1].title = e[0]
+  editableTabs.value[e[1] -1].title = e[0]
   window.localStorage.setItem('tabcontent', JSON.stringify(editableTabs.value))
 }
 try {
 navigator.storage.persist().then(function (persistent) {
   if (persistent){
-      console.log("Storage will not be cleared except by explicit user action");
-      ElMessage('持久存储申请成功！')
+      ElMessage('持久存储申请成功！');
   }
 })} catch {
   console.log('e')
