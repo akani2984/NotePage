@@ -49,7 +49,7 @@
         <el-button @click="saveDialogVisible = false">取消</el-button>
         <el-button @click="handleRename">变更标题</el-button>
         <el-button type="primary" @click="handleSave">
-          确定
+          保存
         </el-button>
       </div>
     </template>
